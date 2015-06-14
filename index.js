@@ -15,6 +15,10 @@ mongodb.MongoClient.connect( "mongodb://localhost:27017/sous", function(err, db)
 
 	new API(db, server);
 
+	server.get(/\/app\/.*/, restify.serveStatic({
+		directory: __dirname
+	}));
+
 	server.listen(8080, function() {
 		console.log("Aww yeah, let's do this.");
 	});
