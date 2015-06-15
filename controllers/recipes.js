@@ -31,6 +31,8 @@ function RecipesController(api, server) {
 	});
 
 	server.put("/api/recipes/:id", function(req, res, next) {
+		delete req.body._id;
+
 		recipes.update({_id: ObjectId(req.params.id)}, {$set: req.body}, function(err, result) {
 			assert.ifError(err);
 
