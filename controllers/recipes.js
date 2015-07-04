@@ -4,7 +4,7 @@ var assert = require("assert");
 function RecipesController(api, server) {
 	var recipes = api.getDbConnection().collection("recipes");
 
-	server.get("/api/recipes", function(req, res, next) {
+	server.get("/api/recipes", api.authenticate.bind(api), function(req, res, next) {
 		var stream = recipes.find().stream();
 		var results = [];
 		stream.on("data", function(recipe) {results.push(recipe);});
@@ -14,7 +14,7 @@ function RecipesController(api, server) {
 		});
 	});
 
-	server.get("/api/recipes/:id", function(req, res, next) {
+	server.get("/api/recipes/:id", api.authenticate.bind(api), function(req, res, next) {
 		recipes.findOne({_id: ObjectId(req.params.id)}, function(err, recipe) {
 			assert.ifError(err);
 			res.json(recipe ? 200 : 404, recipe);

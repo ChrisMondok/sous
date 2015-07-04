@@ -1,4 +1,5 @@
 var restify = require("restify");
+var restifyCookies = require("restify-cookies");
 var mongodb = require("mongodb");
 var API = require("./API");
 var assert = require("assert");
@@ -12,6 +13,8 @@ mongodb.MongoClient.connect( "mongodb://localhost:27017/sous", function(err, db)
 	});
 
 	server.use(restify.bodyParser());
+
+	server.use(restifyCookies.parse);
 
 	new API(db, server);
 
